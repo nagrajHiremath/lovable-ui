@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Loader2, Lock, Mail, Sparkles } from "lucide-react";
+import { Loader2, Lock, Mail, Github, Globe } from "lucide-react";
 import { api, setAuthToken, setUserInfo } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Logo } from "@/components/Logo";
 import { useToast } from "@/hooks/use-toast";
 
 export function LoginModal() {
@@ -51,25 +52,51 @@ export function LoginModal() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      {/* Background gradient */}
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background text-foreground">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/3 left-1/3 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute left-0 top-1/4 h-[420px] w-[420px] rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute right-0 bottom-1/4 h-[360px] w-[360px] rounded-full bg-secondary/10 blur-3xl" />
       </div>
 
-      <div className="relative w-full max-w-md">
-        {/* Card */}
-        <div className="bg-card border border-border/50 rounded-2xl p-8 shadow-2xl">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/20 mb-5">
-              <Sparkles className="w-7 h-7 text-primary" />
+      <div className="relative w-full max-w-lg">
+        <div className="rounded-[2rem] border border-white/10 bg-panel/90 p-8 shadow-[0_30px_80px_rgba(0,0,0,0.25)] backdrop-blur-xl">
+          <div className="flex flex-col gap-6 text-center sm:text-left">
+            <div className="mx-auto flex items-center gap-3 rounded-3xl border border-white/10 bg-[#111827]/90 px-5 py-4 shadow-[0_15px_40px_rgba(0,0,0,0.18)] sm:mx-0">
+              <Logo hideText className="!gap-3" />
             </div>
-            <h1 className="text-2xl font-semibold text-foreground mb-2">Welcome to Lovable</h1>
-            <p className="text-muted-foreground text-sm">Sign in to continue building</p>
+            <div>
+              <p className="text-sm uppercase tracking-[0.35em] text-muted-foreground">Secure login</p>
+              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                Welcome back
+              </h1>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Sign in to continue to your workspace and launch AI-assisted collaboration.
+              </p>
+            </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid gap-3 mt-6 sm:grid-cols-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => window.location.assign("/auth/google")}
+              className="flex items-center justify-center gap-2 rounded-2xl border border-border/50 px-4 py-3 text-sm"
+            >
+              <Globe className="h-4 w-4" />
+              Google
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => window.location.assign("/auth/github")}
+              className="flex items-center justify-center gap-2 rounded-2xl border border-border/50 px-4 py-3 text-sm"
+            >
+              <Github className="h-4 w-4" />
+              GitHub
+            </Button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium text-foreground">
                 Email
@@ -82,7 +109,7 @@ export function LoginModal() {
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 h-12 bg-muted/50 border-border/50 focus:border-primary rounded-xl text-sm"
+                  className="pl-10 h-12 rounded-2xl border-border/50 bg-muted/50 text-sm focus:border-primary"
                   disabled={isLoading}
                 />
               </div>
@@ -100,17 +127,13 @@ export function LoginModal() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 h-12 bg-muted/50 border-border/50 focus:border-primary rounded-xl text-sm"
+                  className="pl-10 h-12 rounded-2xl border-border/50 bg-muted/50 text-sm focus:border-primary"
                   disabled={isLoading}
                 />
               </div>
             </div>
 
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-xl text-sm"
-            >
+            <Button type="submit" disabled={isLoading} className="w-full rounded-full px-8 py-3 text-base">
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -122,12 +145,9 @@ export function LoginModal() {
             </Button>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground mt-6">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-primary hover:underline font-medium">
-              Sign up
-            </Link>
-          </p>
+          <div className="mt-6 text-center text-sm text-muted-foreground">
+            <span>Or continue with Google or GitHub above.</span>
+          </div>
         </div>
       </div>
     </div>

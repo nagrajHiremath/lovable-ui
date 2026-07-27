@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader2, Bot, ThumbsUp, ThumbsDown, Copy, RotateCcw, MoreHorizontal, FileCode } from "lucide-react";
+import { ArrowUpRight, Loader2, Bot, ThumbsUp, ThumbsDown, Copy, RotateCcw, MoreHorizontal, FileCode } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
@@ -110,12 +110,12 @@ export function ChatPanel({ messages, onSendMessage, isStreaming, isLoading, rea
             type="submit"
             size="icon"
             disabled={!input.trim() || isStreaming || readOnly}
-            className="absolute right-2 bottom-2 h-8 w-8 rounded-lg"
+            className="absolute right-2 bottom-2 h-8 w-8 rounded-full bg-primary/90 text-primary-foreground hover:bg-primary"
           >
             {isStreaming ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              <Send className="w-4 h-4" />
+              <ArrowUpRight className="w-4 h-4" />
             )}
           </Button>
         </form>
