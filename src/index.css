@@ -143,6 +143,22 @@
 }
 
 @layer utilities {
+  .animate-gradient-pan {
+    animation: gradientPan 14s ease-in-out infinite;
+  }
+
+  .animate-blob-drift {
+    animation: blobDrift 18s ease-in-out infinite;
+  }
+
+  .animate-galaxy-flow {
+    animation: galaxyFlow 12s ease-in-out infinite;
+  }
+
+  .animate-galaxy-spin {
+    animation: galaxySpin 28s linear infinite;
+  }
+
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out;
   }
@@ -183,6 +199,71 @@
     }
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes gradientPan {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+      filter: hue-rotate(0deg) saturate(1.15);
+      opacity: 0.8;
+    }
+    25% {
+      transform: translate3d(6%, -4%, 0) scale(1.12);
+      filter: hue-rotate(14deg) saturate(1.28);
+      opacity: 0.96;
+    }
+    50% {
+      transform: translate3d(-5%, 6%, 0) scale(1.18);
+      filter: hue-rotate(30deg) saturate(1.36);
+      opacity: 0.9;
+    }
+    75% {
+      transform: translate3d(-7%, -3%, 0) scale(1.1);
+      filter: hue-rotate(18deg) saturate(1.22);
+      opacity: 0.94;
+    }
+  }
+
+  @keyframes blobDrift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    33% {
+      transform: translate3d(10%, -8%, 0) scale(1.18);
+    }
+    66% {
+      transform: translate3d(-8%, 9%, 0) scale(0.94);
+    }
+  }
+
+  @keyframes galaxyFlow {
+    0%,
+    100% {
+      transform: translate3d(-4%, -2%, 0) scale(1.02);
+      background-position: 0% 50%;
+      opacity: 0.58;
+    }
+    50% {
+      transform: translate3d(4%, 3%, 0) scale(1.08);
+      background-position: 100% 50%;
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes galaxySpin {
+    from {
+      transform: rotate(0deg) scale(1.05);
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 0.78;
+    }
+    to {
+      transform: rotate(360deg) scale(1.05);
+      opacity: 0.5;
     }
   }
 }
