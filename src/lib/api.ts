@@ -39,6 +39,17 @@ interface FilesApiResponse {
   files: { path: string }[];
 }
 
+interface FileContentApiResponse {
+  content?: string;
+  fileContent?: string;
+  text?: string;
+  data?: {
+    content?: string;
+    fileContent?: string;
+    text?: string;
+  };
+}
+
 // Convert flat file paths to nested tree structure
 function buildFileTree(paths: { path: string }[]): FileNode[] {
   const root: FileNode[] = [];
@@ -128,7 +139,7 @@ export const api = {
   },
 
   async getFiles(projectId: string): Promise<FileNode[]> {
-    const response = await fetch(buildApiUrl(`/api/v1/workspace/projects/${projectId}/files`), {
+    const response = await fetch(buildApiUrl(`/api/v1/workspace/projects/${projectId}/files/tree`), {
       headers: { ...getAuthHeaders() },
     });
 
@@ -148,14 +159,44 @@ export const api = {
       }
     );
 
-    const data = await response.json();
+    const contentType = response.headers.get("content-type") || "";
+    const rawBody = await response.text();
 
     if (!response.ok) {
       console.error(`Error fetching file: ${response.status} ${response.statusText}`);
       throw new Error("Failed to fetch file content");
     }
 
-    return data.content;
+    if (!contentType.includes("application/json")) {
+      return rawBody;
+    }
+
+    let data: FileContentApiResponse | string;
+    try {
+      data = JSON.parse(rawBody);
+    } catch {
+      // Some backends may return text with a JSON content-type header.
+      return rawBody;
+    }
+
+    if (typeof data === "string") {
+      return data;
+    }
+
+    const content =
+      data.content ??
+      data.fileContent ??
+      data.text ??
+      data.data?.content ??
+      data.data?.fileContent ??
+      data.data?.text;
+
+    if (typeof content === "string") {
+      return content;
+    }
+
+    console.warn("Unexpected file content response shape", data);
+    return rawBody;
   },
 
   async deploy(projectId: string): Promise<DeployResponse> {
